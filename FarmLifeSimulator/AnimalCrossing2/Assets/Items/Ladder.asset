@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f302586a8470946a66b2562da3da69, type: 3}
+  m_Name: Ladder
+  m_EditorClassIdentifier: 
+  itemName: Ladder
+  itemDescription: Mistakes are new possibilities
+  isUsable: 0
+  isDropable: 1
+  isPlacing: 0
+  isHanding: 0
+  staminaAdd: 0
+  healthAdd: 0
+  creativityAdd: 20
+  itemIcon: {fileID: 21300000, guid: 5d7ba5ddef8c51642ae7087c09f5206c, type: 3}
+  itemToSpawnPlacedOrHanded: {fileID: 1973768954561876625, guid: 3e86ebd71865f7140af8e4167a4737e6,
+    type: 3}
+  itemToDrop: {fileID: 7230699468708465993, guid: 516434f9e1f6fd6479dba701e9bf7189,
+    type: 3}
