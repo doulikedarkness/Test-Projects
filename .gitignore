@@ -75,3 +75,8 @@ Mirror Network Test/Library/
 .pidb.meta
 .meta
 .cs.meta
+*.meta
+*.cache
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
