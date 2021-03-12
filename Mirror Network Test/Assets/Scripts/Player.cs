@@ -45,18 +45,6 @@ public class Player : NetworkBehaviour
         ActionInputs();
     }
 
-    [Command]
-    private void CmdChangeColor()
-    {
-        myColor = UnityEngine.Random.ColorHSV();
-    }
-
-
-    private void OnChangeColor(Color oldColor, Color newColor)
-    {
-        meshRenderer.material.color = newColor;
-    }
-
     private void Movements()
     {
         float horizontal = Input.GetAxis("Horizontal");
@@ -95,6 +83,17 @@ public class Player : NetworkBehaviour
     private void Spawn()
     {
         NetworkServer.Spawn(Instantiate(NetworkManager.singleton.spawnPrefabs[0]));
+    }
+
+    [Command]
+    private void CmdChangeColor()
+    {
+        myColor = UnityEngine.Random.ColorHSV();
+    }
+
+    private void OnChangeColor(Color oldColor, Color newColor)
+    {
+        meshRenderer.material.color = newColor;
     }
 
     private void CooldownTimer()
@@ -138,17 +137,6 @@ public class Player : NetworkBehaviour
             }
     }
 
-    [System.Serializable]
-    public class PlayerChangableValues
-    {
-        public float hungerBuffTime = 3f;
-        public float moveSpeed = 10f;
-        public int attackCooldown = 8;
-
-        [Space] public Vector3 scaleFor;
-    }
-
-
     private IEnumerator Restart(float _spawnAfter)
     {
         SetPlayerActive(false);
@@ -167,5 +155,16 @@ public class Player : NetworkBehaviour
         meshRenderer.enabled = _isActive;
         foreach (var item in colliders)
             item.enabled = _isActive;
+    }
+
+
+    [System.Serializable]
+    public class PlayerChangableValues
+    {
+        public float hungerBuffTime = 3f;
+        public float moveSpeed = 10f;
+        public int attackCooldown = 8;
+
+        [Space] public Vector3 scaleFor;
     }
 }
