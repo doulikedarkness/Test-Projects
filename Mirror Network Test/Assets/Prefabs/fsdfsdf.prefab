@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 3935095292920962987}
   - component: {fileID: 2688640843565194073}
   m_Layer: 0
-  m_Name: Player
+  m_Name: fsdfsdf
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -384,10 +384,11 @@ MonoBehaviour:
     moveSpeed: 10
     attackCooldown: 8
     scaleFor: {x: 0.5, y: 0.5, z: 0.5}
-  myColor: {r: 0.47053623, g: 0, b: 1, a: 0}
+  myColor: {r: 1, g: 1, b: 1, a: 0}
   cdText: {fileID: 460406767}
   buttonSkill: {fileID: 603488911}
   canvas: {fileID: 8896427875511430813}
+  pfb: {fileID: 0}
 --- !u!65 &3950401280457104995
 BoxCollider:
   m_ObjectHideFlags: 0

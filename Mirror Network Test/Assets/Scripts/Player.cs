@@ -11,7 +11,10 @@ public class Player : NetworkBehaviour
     [SerializeField, SyncVar(hook = nameof(OnChangeColor))] private Color myColor;
     [SerializeField] private Text cdText;
     [SerializeField] private Button buttonSkill;
-    [SerializeField] private Canvas canvas; 
+    [SerializeField] private Canvas canvas;
+
+    [SerializeField] private BoxCollider[] colliders;
+    [SerializeField] private Rigidbody rb;
 
     private float cd = 1;
     private bool isBuffTime = false;
@@ -27,6 +30,9 @@ public class Player : NetworkBehaviour
     {
         meshRenderer = GetComponent<MeshRenderer>();
         myColor = meshRenderer.material.color;
+        rb = GetComponent<Rigidbody>();
+
+        colliders = GetComponentsInChildren<BoxCollider>();
     }
 
     private void Update()
@@ -70,6 +76,11 @@ public class Player : NetworkBehaviour
         {
             OnAttack();
         }
+
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            Spawn();
+        }
     }
 
     public void OnAttack()
@@ -78,6 +89,12 @@ public class Player : NetworkBehaviour
         {
             StartCoroutine(hungerBuff());
         }
+    }
+
+    [Command]
+    private void Spawn()
+    {
+        NetworkServer.Spawn(Instantiate(NetworkManager.singleton.spawnPrefabs[0]));
     }
 
     private void CooldownTimer()
@@ -112,6 +129,15 @@ public class Player : NetworkBehaviour
         yield return null;
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            if(transform.localScale.x < other.transform.localScale.x)
+            {
+                StartCoroutine(Restart(5));
+            }
+    }
+
     [System.Serializable]
     public class PlayerChangableValues
     {
@@ -120,5 +146,26 @@ public class Player : NetworkBehaviour
         public int attackCooldown = 8;
 
         [Space] public Vector3 scaleFor;
+    }
+
+
+    private IEnumerator Restart(float _spawnAfter)
+    {
+        SetPlayerActive(false);
+
+        yield return new WaitForSeconds(_spawnAfter);
+
+        transform.position = NetworkManager.singleton.transform.position;
+        SetPlayerActive(true);
+
+        yield return null;
+    }
+
+    private void SetPlayerActive(bool _isActive)
+    {
+        rb.useGravity = _isActive;
+        meshRenderer.enabled = _isActive;
+        foreach (var item in colliders)
+            item.enabled = _isActive;
     }
 }
