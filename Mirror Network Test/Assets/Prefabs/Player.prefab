@@ -268,7 +268,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 45344252}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4752775881040954718}
+        m_MethodName: OnAttack
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1005148000451797358
 GameObject:
   m_ObjectHideFlags: 0
@@ -367,9 +378,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  changableValues:
+    hungerBuffTime: 3
+    moveSpeed: 10
+    attackCooldown: 8
+    scaleFor: {x: 0.5, y: 0.5, z: 0.5}
   myColor: {r: 0.47053623, g: 0, b: 1, a: 0}
-  moveSpeed: 10
-  attackCooldown: 8
   cdText: {fileID: 460406767}
   buttonSkill: {fileID: 603488911}
   canvas: {fileID: 8896427875511430813}

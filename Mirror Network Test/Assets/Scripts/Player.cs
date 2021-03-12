@@ -6,14 +6,15 @@ using UnityEngine.UI;
 
 public class Player : NetworkBehaviour
 {
+    public PlayerChangableValues changableValues;
+
     [SerializeField, SyncVar(hook = nameof(OnChangeColor))] private Color myColor;
-    [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private int attackCooldown = 8;
     [SerializeField] private Text cdText;
     [SerializeField] private Button buttonSkill;
     [SerializeField] private Canvas canvas; 
 
     private float cd = 1;
+    private bool isBuffTime = false;
 
     private MeshRenderer meshRenderer;
 
@@ -55,7 +56,7 @@ public class Player : NetworkBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        transform.position += new Vector3(horizontal, 0f, vertical) * moveSpeed * Time.deltaTime;
+        transform.position += new Vector3(horizontal, 0f, vertical) * changableValues.moveSpeed * Time.deltaTime;
     }
 
     private void ActionInputs()
@@ -65,33 +66,59 @@ public class Player : NetworkBehaviour
             CmdChangeColor();
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !isBuffTime)
         {
             OnAttack();
         }
     }
 
-    private void OnAttack()
+    public void OnAttack()
     {
         if (cd <= 1)
         {
-            transform.localScale += new Vector3(0.5f, 0.5f, 0.5f);
-            cd = attackCooldown;
-            buttonSkill.interactable = false;
+            StartCoroutine(hungerBuff());
         }
     }
 
     private void CooldownTimer()
     {
-        if (cd <= attackCooldown && cd > 1)
+        if (cd <= changableValues.attackCooldown && cd > 1)
         {
             cd -= Time.deltaTime;
             cdText.text = ((int)cd).ToString();
+            buttonSkill.interactable = false;
         }
-        else if (cd <= 1)
+        else if (cd <= 1 && !isBuffTime) //buff time so buttons isnt interactable while under the buff
         {
             cdText.text = string.Empty;
             buttonSkill.interactable = true;
         }
+    }
+
+    public IEnumerator hungerBuff()
+    {
+        transform.localScale += changableValues.scaleFor;
+        Color defColor = buttonSkill.image.color;
+        buttonSkill.image.color = Color.cyan;
+        isBuffTime = true;
+
+        yield return new WaitForSeconds(changableValues.hungerBuffTime);
+
+        buttonSkill.image.color = defColor;
+        transform.localScale -= changableValues.scaleFor;
+        isBuffTime = false;
+
+        cd = changableValues.attackCooldown;                                //reset CD to let it be active again
+        yield return null;
+    }
+
+    [System.Serializable]
+    public class PlayerChangableValues
+    {
+        public float hungerBuffTime = 3f;
+        public float moveSpeed = 10f;
+        public int attackCooldown = 8;
+
+        [Space] public Vector3 scaleFor;
     }
 }
